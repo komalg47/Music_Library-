@@ -1,0 +1,223 @@
+/* Extra bottom padding so the player bar never covers content */
+.pl-container { max-width: 900px; margin: 0 auto; padding: 32px 24px 100px; }
+
+.pl-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; margin-bottom: 32px; gap: 16px; flex-wrap: wrap;
+}
+.pl-title { font-size: 1.6rem; font-weight: 700; display: flex; align-items: center; gap: 12px; }
+
+/* ── Playlist card ──────────────────────────────── */
+.pl-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  margin-bottom: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.pl-card:hover { border-color: rgba(139,92,246,0.25); }
+
+.pl-card-header {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px; cursor: pointer;
+  user-select: none;
+}
+.pl-card-left { display: flex; align-items: center; gap: 14px; }
+.pl-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; color: var(--purple); flex-shrink: 0;
+}
+.pl-name { font-size: 1rem; font-weight: 600; }
+.pl-sub  { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+
+.pl-card-right { display: flex; align-items: center; gap: 8px; }
+.pl-chevron { color: var(--text-muted); font-size: 0.9rem; transition: transform 0.25s; }
+.pl-chevron.open { transform: rotate(180deg); }
+
+/* ── Expanded song list ─────────────────────────── */
+.pl-song-list {
+  display: none;
+  border-top: 1px solid var(--glass-border);
+}
+.pl-song-list.open { display: block; }
+
+/* Playback toolbar inside each playlist */
+.pl-player-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: rgba(139,92,246,0.06);
+  border-bottom: 1px solid var(--glass-border);
+  flex-wrap: wrap;
+}
+
+.pl-toolbar-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+
+.pl-ctrl-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.pl-ctrl-btn:hover             { background: rgba(139,92,246,0.15); color: var(--text); border-color: var(--purple); }
+.pl-ctrl-btn.active            { background: var(--purple); border-color: var(--purple); color: white; }
+.pl-ctrl-btn.play-btn          { width: 42px; height: 42px; font-size: 1.1rem; }
+.pl-ctrl-btn.play-btn.active   { background: linear-gradient(135deg, var(--purple), #6D28D9); border-color: transparent; color: white; box-shadow: 0 4px 14px rgba(139,92,246,0.4); }
+
+.pl-now-playing-label {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex; align-items: center; gap: 6px;
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  max-width: 200px;
+}
+.pl-now-playing-label i { color: var(--purple); flex-shrink: 0; }
+
+/* Song rows */
+.pl-song-items { padding: 0 20px 12px; }
+
+.pl-song-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px;
+  border-radius: 9px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 0.88rem; color: var(--text-muted);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+.pl-song-item:last-child { border-bottom: none; }
+.pl-song-item:hover  { background: rgba(255,255,255,0.04); }
+.pl-song-item.playing {
+  background: rgba(139,92,246,0.1);
+  border-bottom-color: transparent;
+  color: var(--text);
+}
+.pl-song-item.playing .pl-song-num { display: none; }
+.pl-song-item.playing .pl-song-wave{ display: flex; }
+
+.pl-song-num {
+  width: 22px; text-align: center; font-size: 0.78rem;
+  flex-shrink: 0; color: var(--text-muted);
+}
+/* Animated equalizer bars when playing */
+.pl-song-wave {
+  display: none;
+  align-items: flex-end; gap: 2px;
+  width: 22px; height: 16px; flex-shrink: 0;
+}
+.pl-song-wave span {
+  display: block; width: 3px; border-radius: 2px;
+  background: var(--purple);
+  animation: waveBar 0.8s ease-in-out infinite alternate;
+}
+.pl-song-wave span:nth-child(1) { height: 8px;  animation-delay: 0s;    }
+.pl-song-wave span:nth-child(2) { height: 14px; animation-delay: 0.15s; }
+.pl-song-wave span:nth-child(3) { height: 10px; animation-delay: 0.3s;  }
+@keyframes waveBar { from { transform: scaleY(0.4); } to { transform: scaleY(1); } }
+
+.pl-song-wave.paused span { animation-play-state: paused; }
+
+.pl-song-info { flex: 1; overflow: hidden; }
+.pl-song-title  { font-size: 0.88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pl-song-artist { font-size: 0.76rem; color: #64748B; }
+
+.pl-song-play-btn {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: transparent; border: 1px solid var(--glass-border);
+  color: var(--text-muted); font-size: 0.75rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: all 0.15s; flex-shrink: 0;
+}
+.pl-song-item:hover .pl-song-play-btn { opacity: 1; }
+.pl-song-item.playing .pl-song-play-btn { opacity: 1; background: var(--purple); border-color: var(--purple); color: white; }
+
+/* ── Mini player bar (sticky bottom) ───────────────── */
+#miniPlayer {
+  position: fixed;
+  bottom: -90px;         /* hidden by default */
+  left: 0; right: 0;
+  height: 72px;
+  background: rgba(15,23,42,0.97);
+  backdrop-filter: blur(24px);
+  border-top: 1px solid var(--glass-border);
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 20px;
+  z-index: 300;
+  transition: bottom 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+#miniPlayer.visible { bottom: 0; }
+
+.mini-song-info {
+  display: flex; align-items: center; gap: 14px;
+  flex: 1; overflow: hidden; min-width: 0;
+}
+.mini-cover {
+  width: 44px; height: 44px; border-radius: 8px;
+  background: var(--dark-3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; flex-shrink: 0; overflow: hidden;
+}
+.mini-cover img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+.mini-song-name   { font-size: 0.88rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini-song-artist { font-size: 0.76rem; color: var(--text-muted); }
+
+.mini-controls {
+  display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+}
+.mini-ctrl {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: transparent; border: none;
+  color: var(--text-muted); font-size: 1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.mini-ctrl:hover          { color: var(--text); }
+.mini-ctrl.main-ctrl      { width: 48px; height: 48px; font-size: 1.2rem; background: var(--purple); border-radius: 50%; color: white; }
+.mini-ctrl.main-ctrl:hover{ background: #7C3AED; }
+.mini-ctrl.active         { color: var(--purple); }
+
+.mini-right {
+  display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+}
+.mini-playlist-name {
+  font-size: 0.76rem; color: var(--text-muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 140px;
+}
+
+/* Remove song from playlist button */
+.pl-song-remove-btn {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: transparent; border: 1px solid transparent;
+  color: transparent; font-size: 0.75rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: all 0.15s; flex-shrink: 0;
+}
+.pl-song-item:hover .pl-song-remove-btn {
+  opacity: 1;
+  color: var(--danger);
+  border-color: rgba(239,68,68,0.25);
+}
+.pl-song-remove-btn:hover {
+  background: rgba(239,68,68,0.15) !important;
+  border-color: rgba(239,68,68,0.4) !important;
+}

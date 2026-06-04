@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | MusicVerse</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="auth-page">
+
+    <!-- Left branding panel -->
+    <div class="auth-branding">
+        <div class="brand-logo">🎵</div>
+        <div class="brand-name">MusicVerse</div>
+        <p class="brand-tagline">Join thousands of music lovers. Create your free account and start building your collection.</p>
+
+        <div class="brand-features">
+            <div class="brand-feature-item">
+                <span class="feat-icon">📁</span>
+                <span>Create custom playlists</span>
+            </div>
+            <div class="brand-feature-item">
+                <span class="feat-icon">❤️</span>
+                <span>Save your favorites</span>
+            </div>
+            <div class="brand-feature-item">
+                <span class="feat-icon">🔍</span>
+                <span>Search songs & artists</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right form panel -->
+    <div class="auth-form-panel">
+        <div class="auth-card">
+            <h2>Create account</h2>
+            <p class="subtitle">Fill in the details below to get started</p>
+
+            <form id="registerForm">
+
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">👤</span>
+                        <input
+                            type="text"
+                            id="name"
+                            class="form-control"
+                            placeholder="John Doe"
+                            autocomplete="name"
+                            required>
+                    </div>
+                    <div class="field-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">✉️</span>
+                        <input
+                            type="email"
+                            id="email"
+                            class="form-control"
+                            placeholder="name@example.com"
+                            autocomplete="email"
+                            required>
+                    </div>
+                    <div class="field-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📱</span>
+                        <input
+                            type="tel"
+                            id="phone"
+                            class="form-control"
+                            placeholder="+91 98765 43210"
+                            autocomplete="tel"
+                            required>
+                    </div>
+                    <div class="field-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-control has-toggle"
+                            placeholder="Min. 6 characters"
+                            autocomplete="new-password"
+                            required>
+                        <button type="button" class="toggle-password" tabindex="-1">👁</button>
+                    </div>
+                    <div class="password-strength">
+                        <div class="strength-bar">
+                            <div class="strength-fill"></div>
+                        </div>
+                        <span class="strength-label"></span>
+                    </div>
+                    <div class="field-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            class="form-control has-toggle"
+                            placeholder="Repeat your password"
+                            autocomplete="new-password"
+                            required>
+                        <button type="button" class="toggle-password" tabindex="-1">👁</button>
+                    </div>
+                    <div class="field-error"></div>
+                </div>
+
+                <button type="submit" class="btn-auth">
+                    <span class="btn-text">Create Account</span>
+                    <div class="spinner"></div>
+                </button>
+
+            </form>
+
+            <div class="auth-alt-link">
+                Already have an account? <a href="login.html">Sign in</a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="js/ui.js"></script>
+<script src="js/auth.js"></script>
+
+</body>
+</html>

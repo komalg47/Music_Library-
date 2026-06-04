@@ -1,0 +1,171 @@
+/* NOTE: Backend PUT endpoints needed:
+   PUT /songs/{id}   — SongController/SongServiceImpl
+   PUT /artists/{id} — ArtistController/ArtistServiceImpl
+*/
+
+/* Layout */
+.admin-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 28px 24px 60px;
+  align-items: start;
+}
+
+.admin-sidebar { display: flex; flex-direction: column; gap: 20px; }
+
+.admin-form-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.admin-form-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+}
+.admin-form-title i { color: var(--purple); }
+
+.w-full { width: 100%; justify-content: center; }
+
+/* Section */
+.admin-section { margin-bottom: 28px; }
+
+.admin-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.admin-section-header h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.admin-section-header h2 i { color: var(--purple); }
+
+/* Artist rows */
+.artist-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  transition: background 0.15s;
+}
+.artist-row:hover { background: var(--glass-hover); }
+.artist-row-name {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.9rem; font-weight: 500;
+}
+.artist-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--cyan));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 700; color: white;
+  flex-shrink: 0;
+}
+.artist-row-actions { display: flex; gap: 6px; }
+
+/* Song table */
+.mv-table tbody tr td:first-child { font-weight: 500; }
+.song-row-clickable { cursor: pointer; }
+
+@media (max-width: 900px) {
+  .admin-layout { grid-template-columns: 1fr; }
+}
+
+/* Cover image file picker */
+.cover-file-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.cover-file-wrap input[type="file"] { display: none; }
+.cover-file-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  background: rgba(139,92,246,0.12);
+  border: 1.5px solid rgba(139,92,246,0.3);
+  border-radius: 10px;
+  color: #C4B5FD;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.cover-file-label:hover {
+  background: rgba(139,92,246,0.2);
+  border-color: var(--purple);
+  color: white;
+}
+.cover-file-name {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 180px;
+}
+
+/* ── Admin stats bar ─────────────────────────────── */
+.admin-stats-bar {
+  display: flex;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--glass-border);
+  background: rgba(255,255,255,0.02);
+  flex-wrap: wrap;
+}
+
+.admin-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 14px 22px;
+  min-width: 140px;
+  transition: all 0.2s;
+}
+.admin-stat-item:hover {
+  background: var(--glass-hover);
+  border-color: rgba(255,255,255,0.15);
+}
+.admin-stat-item > i {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+.admin-stat-num {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text);
+}
+.admin-stat-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}

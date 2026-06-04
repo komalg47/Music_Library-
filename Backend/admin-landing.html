@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — MusicVerse</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <style>
+    body {
+      background:
+        radial-gradient(circle at 15% 15%, rgba(239,68,68,0.18) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(220,38,38,0.12) 0%, transparent 40%),
+        var(--dark);
+    }
+    .admin-landing-nav {
+      height: 64px; display: flex; align-items: center;
+      justify-content: space-between; padding: 0 40px;
+      background: rgba(15,23,42,0.95); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(239,68,68,0.15);
+    }
+    .admin-brand { display:flex; align-items:center; gap:10px; font-size:1.25rem; font-weight:700; color:var(--text); text-decoration:none; }
+    .admin-brand i { color:#F87171; font-size:1.4rem; }
+    .hero { min-height: calc(100vh - 64px); display:flex; align-items:center; justify-content:center; text-align:center; padding:60px 24px; }
+    .hero-inner { max-width:560px; }
+    .admin-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25);
+      color:#FCA5A5; font-size:0.8rem; font-weight:600;
+      padding:6px 16px; border-radius:20px; margin-bottom:28px;
+      letter-spacing:0.05em; text-transform:uppercase;
+    }
+    h1 { font-size:clamp(2rem,5vw,3.2rem); font-weight:700; margin-bottom:16px; }
+    h1 span { color:#F87171; }
+    p.sub { color:var(--text-muted); font-size:1rem; line-height:1.7; margin-bottom:40px; }
+    .action-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:400px; margin:0 auto; }
+    .action-tile {
+      background:var(--glass); border:1px solid var(--glass-border);
+      border-radius:16px; padding:28px 20px; text-align:center;
+      text-decoration:none; color:var(--text); transition:all 0.25s; cursor:pointer;
+    }
+    .action-tile:hover { transform:translateY(-4px); border-color:rgba(239,68,68,0.3); box-shadow:0 12px 30px rgba(239,68,68,0.12); }
+    .action-tile i { font-size:2rem; display:block; margin-bottom:12px; }
+    .action-tile.primary-tile { background:rgba(239,68,68,0.1); border-color:rgba(239,68,68,0.25); }
+    .action-tile.primary-tile i { color:#F87171; }
+    .action-tile span { font-size:0.9rem; font-weight:600; }
+  </style>
+</head>
+<body>
+
+<nav class="admin-landing-nav">
+  <a href="index.html" class="admin-brand">
+    <i class="bi bi-shield-lock-fill"></i> MusicVerse Admin
+  </a>
+  <a href="index.html" class="mv-btn mv-btn-outline" style="font-size:0.85rem;">
+    <i class="bi bi-arrow-left"></i> User App
+  </a>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="admin-badge"><i class="bi bi-shield-lock"></i> Restricted Access</div>
+    <h1>MusicVerse<br><span>Admin Panel</span></h1>
+    <p class="sub">Manage the entire MusicVerse library — add songs, artists, and keep the catalog up to date.</p>
+    <div class="action-grid">
+      <a href="admin-login.html" class="action-tile primary-tile">
+        <i class="bi bi-box-arrow-in-right"></i>
+        <span>Admin Login</span>
+      </a>
+      <a href="index.html" class="action-tile">
+        <i class="bi bi-music-note-beamed"></i>
+        <span>User App</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+package com.music_library.user_service.service;
+
+import java.util.List;
+import com.music_library.user_service.dto.UserDTO;
+import com.music_library.user_service.entity.User;
+
+public interface UserService {
+
+    User registerUser(UserDTO userDTO);
+
+    List<User> getAllUsers();
+
+    User getUserById(Long id);
+
+    void deleteUser(Long id);
+    String loginUser(
+            String email,
+            String password
+    );
+}

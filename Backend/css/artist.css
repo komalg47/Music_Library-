@@ -1,0 +1,62 @@
+.artists-container { max-width: 1000px; margin: 0 auto; padding: 32px 24px 60px; }
+
+.artists-search {
+  position: relative; margin-bottom: 28px;
+}
+.artists-search i {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); pointer-events: none;
+}
+.artists-search .mv-input { padding-left: 42px; border-radius: 12px; }
+
+.artist-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.artist-card:hover { border-color: rgba(139,92,246,0.3); }
+
+.artist-header {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px; cursor: pointer;
+  user-select: none;
+}
+.artist-header-left { display: flex; align-items: center; gap: 16px; }
+
+.artist-big-avatar {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--cyan));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; font-weight: 700; color: white; flex-shrink: 0;
+}
+
+.artist-name  { font-size: 1rem; font-weight: 600; }
+.artist-meta  { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+
+.artist-chevron {
+  color: var(--text-muted); font-size: 0.9rem;
+  transition: transform 0.25s;
+}
+.artist-chevron.open { transform: rotate(180deg); }
+
+.artist-songs {
+  display: none;
+  padding: 0 20px 16px;
+  border-top: 1px solid var(--glass-border);
+}
+.artist-songs.open { display: block; }
+
+.artist-song-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 0.88rem; color: var(--text-muted);
+}
+.artist-song-item:last-child { border-bottom: none; }
+.artist-song-item i { color: var(--purple); flex-shrink: 0; }
+
+.no-songs { color: var(--text-muted); font-size: 0.85rem; padding: 12px 0; }

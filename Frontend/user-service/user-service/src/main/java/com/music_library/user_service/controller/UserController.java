@@ -1,0 +1,78 @@
+package com.music_library.user_service.controller;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+import java.util.Map;
+
+import com.music_library.user_service.dto.LoginDTO;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.music_library.user_service.dto.UserDTO;
+import com.music_library.user_service.entity.User;
+import com.music_library.user_service.security.JwtUtil;
+import com.music_library.user_service.service.UserService;
+@RestController
+@RequestMapping("/users")
+@CrossOrigin(origins = "http://127.0.0.1:5500")  
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    // Register a new user
+    @PostMapping("/register")
+    public User registerUser(@RequestBody UserDTO userDTO) {
+        return userService.registerUser(userDTO);
+    }
+
+    // Get all registered users
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    // Get user by ID
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
+
+    // Delete user
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return "User deleted successfully";
+    }
+
+    // Authenticate user and return JWT token
+    @PostMapping("/login")
+    public Map<String, String> login(@RequestBody LoginDTO loginDTO) {
+
+        String token = userService.loginUser(
+                loginDTO.getEmail(),
+                loginDTO.getPassword()
+        );
+
+        if (token == null) {
+            throw new RuntimeException("Invalid Credentials");
+        }
+
+        // Extract user details from token
+        Long userId = jwtUtil.extractUserId(token);
+        User user = userService.getUserById(userId);
+
+        return Map.of(
+                "token", token,
+                "userId", userId.toString(),
+                "email", loginDTO.getEmail(),
+                "name", user.getName()
+        );
+    }
+}

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playlists — MusicVerse</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/playlist.css">
+</head>
+<body>
+
+<nav class="mv-nav">
+  <a href="dashboard.html" class="mv-nav-brand"><i class="bi bi-music-note-beamed"></i> MusicVerse</a>
+  <div class="mv-nav-links">
+    <a href="dashboard.html" class="mv-nav-link"><i class="bi bi-house"></i> <span>Home</span></a>
+    <a href="songs.html"    class="mv-nav-link"><i class="bi bi-music-note-list"></i> <span>Songs</span></a>
+    <a href="playlist.html" class="mv-nav-link active"><i class="bi bi-collection-play"></i> <span>Playlists</span></a>
+    <a href="favorites.html"class="mv-nav-link"><i class="bi bi-heart"></i> <span>Favorites</span></a>
+    <a href="artists.html"  class="mv-nav-link"><i class="bi bi-person-lines-fill"></i> <span>Artists</span></a>
+    <button class="mv-btn mv-btn-outline mv-btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></button>
+  </div>
+</nav>
+
+<div class="pl-container">
+  <div class="pl-header">
+    <div>
+      <h1 class="pl-title"><i class="bi bi-collection-play-fill" style="color:var(--purple);"></i> My Playlists</h1>
+      <p style="color:var(--text-muted);font-size:0.88rem;margin-top:4px;">Organize your favorite songs</p>
+    </div>
+    <button class="mv-btn mv-btn-primary" onclick="openCreateModal()">
+      <i class="bi bi-plus-lg"></i> New Playlist
+    </button>
+  </div>
+  <div id="playlistGrid"></div>
+</div>
+
+<!-- Create playlist modal -->
+<div class="mv-modal-overlay" id="createModalOverlay">
+  <div class="mv-modal">
+    <div class="mv-modal-header">
+      <h3><i class="bi bi-collection-play"></i> New Playlist</h3>
+      <button class="mv-btn-icon" onclick="closeCreateModal()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="mv-modal-body">
+      <label class="mv-label">Playlist Name</label>
+      <input type="text" id="newPlaylistInput" class="mv-input" placeholder="e.g. Morning Vibes" autofocus
+             onkeydown="if(event.key==='Enter') createPlaylist()">
+    </div>
+    <div class="mv-modal-footer">
+      <button class="mv-btn mv-btn-outline" onclick="closeCreateModal()">Cancel</button>
+      <button class="mv-btn mv-btn-primary" onclick="createPlaylist()">
+        <i class="bi bi-plus-lg"></i> Create
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Rename playlist modal -->
+<div class="mv-modal-overlay" id="renameModalOverlay">
+  <div class="mv-modal">
+    <div class="mv-modal-header">
+      <h3><i class="bi bi-pencil"></i> Rename Playlist</h3>
+      <button class="mv-btn-icon" onclick="closeRenameModal()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="mv-modal-body">
+      <input type="hidden" id="renamePlaylistId">
+      <label class="mv-label">New Name</label>
+      <input type="text" id="renamePlaylistInput" class="mv-input" placeholder="Playlist name"
+             onkeydown="if(event.key==='Enter') confirmRename()">
+    </div>
+    <div class="mv-modal-footer">
+      <button class="mv-btn mv-btn-outline" onclick="closeRenameModal()">Cancel</button>
+      <button class="mv-btn mv-btn-primary" onclick="confirmRename()">
+        <i class="bi bi-check-lg"></i> Rename
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm delete modal -->
+<div class="mv-modal-overlay" id="plConfirmModal">
+  <div class="mv-modal" style="max-width:400px;">
+    <div class="mv-modal-header">
+      <h3><i class="bi bi-exclamation-triangle" style="color:var(--danger);"></i> Delete Playlist</h3>
+      <button class="mv-btn-icon" onclick="plConfirmResolve(false)"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="mv-modal-body">
+      <p id="plConfirmMsg" style="color:var(--text-muted);font-size:0.92rem;line-height:1.6;"></p>
+    </div>
+    <div class="mv-modal-footer">
+      <button class="mv-btn mv-btn-outline" onclick="plConfirmResolve(false)">Cancel</button>
+      <button class="mv-btn mv-btn-danger" onclick="plConfirmResolve(true)">
+        <i class="bi bi-trash"></i> Delete
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="js/ui.js"></script>
+<script src="js/playlist.js"></script>
+
+<!-- ── Mini Player Bar ── -->
+<div id="miniPlayer">
+  <div class="mini-song-info">
+    <div class="mini-cover" id="miniCover">
+      <i class="bi bi-music-note"></i>
+    </div>
+    <div style="overflow:hidden;">
+      <div class="mini-song-name"   id="miniSongName">—</div>
+      <div class="mini-song-artist" id="miniSongArtist">—</div>
+    </div>
+  </div>
+
+  <div class="mini-controls">
+    <!-- Shuffle -->
+    <button class="mini-ctrl" id="miniShuffle" title="Shuffle" onclick="toggleShuffle()">
+      <i class="bi bi-shuffle"></i>
+    </button>
+    <!-- Previous -->
+    <button class="mini-ctrl" title="Previous" onclick="playPrev()">
+      <i class="bi bi-skip-start-fill"></i>
+    </button>
+    <!-- Play / Pause -->
+    <button class="mini-ctrl main-ctrl" id="miniPlayPause" title="Play / Pause" onclick="togglePlayPause()">
+      <i class="bi bi-play-fill" id="miniPlayIcon"></i>
+    </button>
+    <!-- Next -->
+    <button class="mini-ctrl" title="Next" onclick="playNext()">
+      <i class="bi bi-skip-end-fill"></i>
+    </button>
+    <!-- Stop -->
+    <button class="mini-ctrl" title="Stop" onclick="stopPlayer()">
+      <i class="bi bi-stop-fill"></i>
+    </button>
+    <!-- Repeat -->
+    <button class="mini-ctrl" id="miniRepeat" title="Repeat" onclick="toggleRepeat()">
+      <i class="bi bi-repeat"></i>
+    </button>
+  </div>
+
+  <div class="mini-right">
+    <i class="bi bi-collection-play" style="color:var(--text-muted);font-size:0.85rem;"></i>
+    <div class="mini-playlist-name" id="miniPlaylistName">—</div>
+  </div>
+</div>
+
+</body>
+</html>

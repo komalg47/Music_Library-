@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — MusicVerse</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="mv-nav">
+  <a href="dashboard.html" class="mv-nav-brand">
+    <i class="bi bi-music-note-beamed"></i> MusicVerse
+  </a>
+  <div class="mv-nav-links">
+    <a href="dashboard.html" class="mv-nav-link active"><i class="bi bi-house"></i> <span>Home</span></a>
+    <a href="songs.html"    class="mv-nav-link"><i class="bi bi-music-note-list"></i> <span>Songs</span></a>
+    <a href="playlist.html" class="mv-nav-link"><i class="bi bi-collection-play"></i> <span>Playlists</span></a>
+    <a href="favorites.html"class="mv-nav-link"><i class="bi bi-heart"></i> <span>Favorites</span></a>
+    <a href="artists.html"  class="mv-nav-link"><i class="bi bi-person-lines-fill"></i> <span>Artists</span></a>
+    <button class="mv-btn mv-btn-outline mv-btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></button>
+  </div>
+</nav>
+
+<div class="dash-container">
+
+  <!-- Welcome -->
+  <div class="welcome-banner">
+    <div class="welcome-text">
+      <h2 id="welcomeUser">Welcome back 👋</h2>
+      <p>Here's a summary of your music library.</p>
+    </div>
+    <div class="welcome-icon"><i class="bi bi-music-note-beamed"></i></div>
+  </div>
+
+  <!-- Stats (no Total Songs per requirement #12) -->
+  <div class="stats-grid">
+    <a href="favorites.html" class="stat-tile">
+      <div class="stat-icon red"><i class="bi bi-heart-fill"></i></div>
+      <div class="stat-info">
+        <div class="stat-num" id="favoriteCount">—</div>
+        <div class="stat-label">Favorites</div>
+      </div>
+    </a>
+    <a href="playlist.html" class="stat-tile">
+      <div class="stat-icon purple"><i class="bi bi-collection-play-fill"></i></div>
+      <div class="stat-info">
+        <div class="stat-num" id="playlistCount">—</div>
+        <div class="stat-label">Playlists</div>
+      </div>
+    </a>
+    <a href="artists.html" class="stat-tile">
+      <div class="stat-icon cyan"><i class="bi bi-person-lines-fill"></i></div>
+      <div class="stat-info">
+        <div class="stat-num" id="artistCount">—</div>
+        <div class="stat-label">Artists</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Quick Actions -->
+  <h3 class="section-title">Quick Actions</h3>
+  <div class="actions-grid">
+    <a href="songs.html"    class="action-card"><i class="bi bi-music-note-list"></i><span>Browse Songs</span></a>
+    <a href="playlist.html" class="action-card"><i class="bi bi-collection-play"></i><span>My Playlists</span></a>
+    <a href="favorites.html"class="action-card"><i class="bi bi-heart"></i><span>My Favorites</span></a>
+    <a href="artists.html"  class="action-card"><i class="bi bi-person-lines-fill"></i><span>Artists</span></a>
+  </div>
+
+</div>
+
+<script src="js/ui.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

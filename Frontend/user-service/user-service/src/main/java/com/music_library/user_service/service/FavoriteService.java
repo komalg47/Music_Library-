@@ -1,0 +1,15 @@
+package com.music_library.user_service.service;
+
+import java.util.List;
+import com.music_library.user_service.entity.Favorite;
+
+public interface FavoriteService {
+
+    Favorite addFavorite(Favorite favorite);
+
+    List<Favorite> getAllFavorites();
+
+    List<Favorite> getFavoritesByUserId(Long userId);
+
+    void deleteFavorite(Long id);
+}
