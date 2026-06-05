@@ -1,5 +1,0 @@
-package com.music_library.admin_service.exception;
-
-public class ResourceNotFoundException {
-
-}

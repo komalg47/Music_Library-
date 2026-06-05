@@ -1,7 +1,0 @@
-package com.music_library.admin_service.entity;
-
-public class Album {
-	private Long albumId;
-
-	private String albumName;
-}
