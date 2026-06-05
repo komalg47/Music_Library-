@@ -1,0 +1,27 @@
+package com.music_library.user_service.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.music_library.user_service.entity.Favorite;
+import com.music_library.user_service.service.FavoriteService;
+
+@RestController
+@RequestMapping("/favorites")
+public class FavoriteController {
+
+    @Autowired
+    private FavoriteService favoriteService;
+
+    @PostMapping
+    public Favorite addFavorite(@RequestBody Favorite favorite) {
+        return favoriteService.addFavorite(favorite);
+    }
+
+    @GetMapping
+    public List<Favorite> getAllFavorites() {
+        return favoriteService.getAllFavorites();
+    }
+}

@@ -1,0 +1,9 @@
+package com.music_library.admin_service.entity;
+
+public class Admin {
+	private Long adminId;
+
+	private String email;
+
+	private String password;
+}

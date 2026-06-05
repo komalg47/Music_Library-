@@ -1,0 +1,38 @@
+package com.music_library.admin_service.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.music_library.admin_service.entity.Song;
+import com.music_library.admin_service.service.SongService;
+
+@RestController
+@RequestMapping("/songs")
+public class SongController {
+
+    @Autowired
+    private SongService songService;
+
+    @PostMapping
+    public Song addSong(@RequestBody Song song) {
+        return songService.addSong(song);
+    }
+
+    @GetMapping
+    public List<Song> getAllSongs() {
+        return songService.getAllSongs();
+    }
+
+    @GetMapping("/{id}")
+    public Song getSong(@PathVariable Long id) {
+        return songService.getSongById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteSong(@PathVariable Long id) {
+        songService.deleteSong(id);
+        return "Song deleted successfully";
+    }
+}
