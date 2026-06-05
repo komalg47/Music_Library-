@@ -1,0 +1,139 @@
+package com.music_library.user_service.controller;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+import java.util.Map;
+
+import com.music_library.user_service.dto.LoginDTO;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.music_library.user_service.dto.UserDTO;
+import com.music_library.user_service.entity.User;
+import com.music_library.user_service.security.JwtUtil;
+import com.music_library.user_service.service.UserService;
+
+/**
+ * REST Controller for managing User resources and authentication.
+ * Provides endpoints for user registration, login, and profile management.
+ * All endpoints are exposed under the /users base path.
+ * 
+ * This controller handles:
+ * - User registration with password encryption
+ * - User authentication with JWT token generation
+ * - User profile retrieval (by ID or all users)
+ * - User deletion
+ * - Returns username along with email after login for personalized dashboard
+ * 
+ * Security:
+ * - Passwords are hashed using BCrypt before storage
+ * - JWT tokens are generated upon successful authentication
+ * - Tokens are used for subsequent authenticated requests
+ * 
+ * @author MusicVerse Team
+ * @version 1.0
+ * @since 2024
+ */
+@RestController
+@RequestMapping("/users")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    /**
+     * Registers a new user in the system.
+     * Hashes the password before storing and assigns USER role by default.
+     * 
+     * @param userDTO the data transfer object containing user registration information
+     * @return the created User entity with generated ID (password is hashed)
+     * @throws DuplicateResourceException if email already exists in the system
+     */
+    @PostMapping("/register")
+    public User registerUser(@RequestBody UserDTO userDTO) {
+        return userService.registerUser(userDTO);
+    }
+
+    /**
+     * Retrieves all registered users from the system.
+     * Used primarily for admin purposes.
+     * 
+     * @return List of all User entities (passwords are hashed)
+     */
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    /**
+     * Retrieves a specific user by their ID.
+     * 
+     * @param id the unique identifier of the user
+     * @return the User entity if found, null otherwise
+     */
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
+
+    /**
+     * Deletes a user from the system.
+     * Note: Does not cascade delete user's playlists and favorites.
+     * 
+     * @param id the unique identifier of the user to delete
+     * @return success message confirming deletion
+     */
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return "User deleted successfully";
+    }
+
+    /**
+     * Authenticates a user and generates a JWT token.
+     * Returns user information including username for dashboard personalization.
+     * 
+     * The response includes:
+     * - JWT token for authenticated requests
+     * - User ID for API calls
+     * - User email for reference
+     * - User name for displaying "Welcome, [Name]" message
+     * 
+     * @param loginDTO the data transfer object containing login credentials (email and password)
+     * @return Map containing token, userId, email, and name
+     * @throws AuthenticationException if credentials are invalid
+     */
+    @PostMapping("/login")
+    public Map<String, String> login(@RequestBody LoginDTO loginDTO) {
+
+        // Authenticate user and generate JWT token
+        String token = userService.loginUser(
+                loginDTO.getEmail(),
+                loginDTO.getPassword()
+        );
+
+        if (token == null) {
+            throw new RuntimeException("Invalid Credentials");
+        }
+
+        // Extract userId from token to send to frontend
+        Long userId = jwtUtil.extractUserId(token);
+        
+        // Get user details to send name for personalized welcome message
+        User user = userService.getUserById(userId);
+
+        return Map.of(
+                "token", token,
+                "userId", userId.toString(),
+                "email", loginDTO.getEmail(),
+                "name", user.getName()
+        );
+    }
+}

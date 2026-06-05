@@ -1,0 +1,5 @@
+package com.music_library.admin_service.repository;
+
+public interface SongRepository {
+
+}

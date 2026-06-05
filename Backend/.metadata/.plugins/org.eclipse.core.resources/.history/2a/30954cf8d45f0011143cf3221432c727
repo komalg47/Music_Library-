@@ -1,0 +1,94 @@
+package com.music_library.user_service.exception;
+
+import java.time.LocalDateTime;
+
+/**
+ * Standard error response structure for all exception responses.
+ * This class provides a consistent format for error messages across the application.
+ * 
+ * @author MusicVerse Team
+ * @version 1.0
+ * @since 2024
+ */
+public class ErrorResponse {
+
+    /** HTTP status code */
+    private int status;
+
+    /** Error message */
+    private String message;
+
+    /** Detailed error description */
+    private String details;
+
+    /** Timestamp when the error occurred */
+    private LocalDateTime timestamp;
+
+    /** Request path where error occurred */
+    private String path;
+
+    /**
+     * Default constructor initializing timestamp to current time.
+     */
+    public ErrorResponse() {
+        this.timestamp = LocalDateTime.now();
+    }
+
+    /**
+     * Constructs ErrorResponse with all fields.
+     * 
+     * @param status HTTP status code
+     * @param message error message
+     * @param details detailed error description
+     * @param path request path
+     */
+    public ErrorResponse(int status, String message, String details, String path) {
+        this.status = status;
+        this.message = message;
+        this.details = details;
+        this.path = path;
+        this.timestamp = LocalDateTime.now();
+    }
+
+    // Getters and Setters
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+}

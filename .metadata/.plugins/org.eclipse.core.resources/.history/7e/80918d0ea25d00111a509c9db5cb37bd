@@ -1,0 +1,5 @@
+package com.music_library.admin_service.service.impl;
+
+public class SongServiceImpl {
+
+}

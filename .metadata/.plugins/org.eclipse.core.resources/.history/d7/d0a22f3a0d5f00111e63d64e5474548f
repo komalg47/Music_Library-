@@ -1,0 +1,38 @@
+package com.music_library.user_service.controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.music_library.user_service.dto.UserDTO;
+import com.music_library.user_service.entity.User;
+import com.music_library.user_service.service.UserService;
+@RestController
+@RequestMapping("/users")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
+public class UserController {
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/register")
+    public User registerUser(@RequestBody UserDTO userDTO) {
+        return userService.registerUser(userDTO);
+    }
+
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return "User deleted successfully";
+    }
+}

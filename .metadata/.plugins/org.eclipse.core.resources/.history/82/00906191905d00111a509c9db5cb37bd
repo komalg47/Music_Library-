@@ -1,0 +1,7 @@
+package com.music_library.user_service.entity;
+
+public class PlaylistSong {
+	private Long id;
+
+	private Long songId;
+}

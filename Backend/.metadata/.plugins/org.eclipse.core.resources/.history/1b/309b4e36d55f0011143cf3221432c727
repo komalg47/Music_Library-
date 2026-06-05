@@ -1,0 +1,249 @@
+package com.music_library.user_service.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.dao.DataIntegrityViolationException;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+/**
+ * Global exception handler for the User Service.
+ * This class handles all exceptions thrown by controllers and provides consistent error responses.
+ * It centralizes exception handling to ensure uniform error messages across the application.
+ * 
+ * Key Features:
+ * - Handles custom exceptions (ResourceNotFoundException, AuthenticationException, etc.)
+ * - Handles validation errors
+ * - Handles database constraint violations
+ * - Handles authentication failures
+ * - Provides detailed error information for debugging
+ * - Excludes actuator endpoints from custom error handling
+ * 
+ * @author MusicVerse Team
+ * @version 1.0
+ * @since 2024
+ */
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    /**
+     * Handles ResourceNotFoundException thrown when a requested resource is not found.
+     * Returns HTTP 404 NOT FOUND status with error details.
+     * 
+     * @param ex the ResourceNotFoundException that was thrown
+     * @param request the current web request
+     * @return ResponseEntity containing error details and 404 status
+     */
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
+            ResourceNotFoundException ex, WebRequest request) {
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                "Resource Not Found",
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Handles AuthenticationException thrown when user authentication fails.
+     * Returns HTTP 401 UNAUTHORIZED status with error details.
+     * 
+     * @param ex the AuthenticationException that was thrown
+     * @param request the current web request
+     * @return ResponseEntity containing error details and 401 status
+     */
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(
+            AuthenticationException ex, WebRequest request) {
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.UNAUTHORIZED.value(),
+                "Authentication Failed",
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    /**
+     * Handles InvalidRequestException thrown when request contains invalid data.
+     * Returns HTTP 400 BAD REQUEST status with error details.
+     * 
+     * @param ex the InvalidRequestException that was thrown
+     * @param request the current web request
+     * @return ResponseEntity containing error details and 400 status
+     */
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidRequestException(
+            InvalidRequestException ex, WebRequest request) {
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Invalid Request",
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handles DuplicateResourceException thrown when attempting to create duplicate resources.
+     * Returns HTTP 409 CONFLICT status with error details.
+     * 
+     * @param ex the DuplicateResourceException that was thrown
+     * @param request the current web request
+     * @return ResponseEntity containing error details and 409 status
+     */
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateResourceException(
+            DuplicateResourceException ex, WebRequest request) {
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                "Duplicate Resource",
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    /**
+     * Handles validation errors from @Valid annotations on request bodies.
+     * Returns HTTP 400 BAD REQUEST with details of validation failures.
+     * 
+     * @param ex the MethodArgumentNotValidException containing validation errors
+     * @param request the current web request
+     * @return ResponseEntity containing validation error details and 400 status
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(
+            MethodArgumentNotValidException ex, WebRequest request) {
+
+        StringBuilder details = new StringBuilder("Validation failed: ");
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                details.append(error.getField())
+                        .append(" - ")
+                        .append(error.getDefaultMessage())
+                        .append("; ")
+        );
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Validation Error",
+                details.toString(),
+                request.getDescription(false).replace("uri=", "")
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handles database constraint violations (unique constraints, foreign key violations).
+     * Returns HTTP 409 CONFLICT status with error details.
+     * 
+     * @param ex the DataIntegrityViolationException that was thrown
+     * @param request the current web request
+     * @return ResponseEntity containing error details and 409 status
+     */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(
+            DataIntegrityViolationException ex, WebRequest request) {
+
+        String message = "Database constraint violation";
+        if (ex.getMessage().contains("Duplicate entry")) {
+            message = "A record with this information already exists (email or username)";
+        }
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                "Data Integrity Violation",
+                message,
+                request.getDescription(false).replace("uri=", "")
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    /**
+     * Handles NoHandlerFoundException when no handler is found for a request.
+     * Excludes actuator endpoints and returns HTTP 404 NOT FOUND.
+     * 
+     * @param ex the NoHandlerFoundException that was thrown
+     * @param request the HTTP servlet request
+     * @return ResponseEntity containing error details and 404 status
+     */
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoHandlerFoundException(
+            NoHandlerFoundException ex, HttpServletRequest request) {
+
+        // Don't handle actuator endpoints with custom error response
+        if (request.getRequestURI().startsWith("/actuator")) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    HttpStatus.NOT_FOUND.value(),
+                    "Actuator Endpoint Not Found",
+                    "Actuator endpoint not found or not enabled: " + request.getRequestURI(),
+                    request.getRequestURI()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                "Endpoint Not Found",
+                "No handler found for " + ex.getHttpMethod() + " " + ex.getRequestURL(),
+                request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Global exception handler for all uncaught exceptions.
+     * This is the fallback handler that catches any exceptions not handled by specific handlers.
+     * Returns HTTP 500 INTERNAL SERVER ERROR with error details.
+     * 
+     * @param ex the Exception that was thrown
+     * @param request the HTTP servlet request
+     * @return ResponseEntity containing error details and 500 status
+     */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGlobalException(
+            Exception ex, HttpServletRequest request) {
+
+        // Don't interfere with actuator endpoints
+        if (request.getRequestURI().startsWith("/actuator")) {
+            ErrorResponse errorResponse = new ErrorResponse(
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "Actuator Error",
+                    "Error accessing actuator endpoint: " + ex.getMessage(),
+                    request.getRequestURI()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // Log the exception for debugging
+        System.err.println("Unhandled exception: " + ex.getClass().getName());
+        ex.printStackTrace();
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Internal Server Error",
+                "Something went wrong: " + ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}

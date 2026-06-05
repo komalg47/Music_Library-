@@ -1,0 +1,27 @@
+package com.music_library.user_service.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.music_library.user_service.entity.Favorite;
+import com.music_library.user_service.repository.FavoriteRepository;
+import com.music_library.user_service.service.FavoriteService;
+
+@Service
+public class FavoriteServiceImpl implements FavoriteService {
+
+    @Autowired
+    private FavoriteRepository favoriteRepository;
+
+    @Override
+    public Favorite addFavorite(Favorite favorite) {
+        return favoriteRepository.save(favorite);
+    }
+
+    @Override
+    public List<Favorite> getAllFavorites() {
+        return favoriteRepository.findAll();
+    }
+}

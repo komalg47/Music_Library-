@@ -1,0 +1,27 @@
+package com.music_library.admin_service.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.music_library.admin_service.entity.Artist;
+import com.music_library.admin_service.repository.ArtistRepository;
+import com.music_library.admin_service.service.ArtistService;
+
+@Service
+public class ArtistServiceImpl implements ArtistService {
+
+    @Autowired
+    private ArtistRepository artistRepository;
+
+    @Override
+    public Artist addArtist(Artist artist) {
+        return artistRepository.save(artist);
+    }
+
+    @Override
+    public List<Artist> getAllArtists() {
+        return artistRepository.findAll();
+    }
+}
